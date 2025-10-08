@@ -63,7 +63,6 @@ BANNER_TEXT = fr"""{CYAN}
   / /_/ / /   / / / /_/ / /| | /  |/ /__/ // / / //_ <  {GREEN}🔹 {BOLD}{GREEN}TOOL AUTO 
  / ____/ /___/ / / _, _/ ___ |/ /|  // __// /_/ /__/ / {GREEN}🔹 Version : 2.0
 /_/   /_____/_/ /_/ |_/_/  |_/_/ |_//____/\____/____/  {BLUE}GOLIKE {MAGENTA}INSTAGRAM{RESET}
-# Dòng đã sửa
 {BOLD}{CYAN}Telegram: {WHITE}https://t.me/se_meo_bao_an{RESET}🔹 {BLUE}MBBANK{RESET} :{YELLOW}PLTRAN203{RESET}🔹{RESET} {GREEN}TÊN : {RESET}{BOLD}{CYAN}Phong Tus{RESET}
 ════════════════════════════════════════════════════════════════════════════════
 {RESET}"""
@@ -1033,4 +1032,5 @@ def run():
 # Đảm bảo lệnh chạy khi file được gọi trực tiếp
 if __name__ == '__main__':
     run()
+
 
