@@ -39,7 +39,7 @@ GREEN   = "\033[32m"
 CYAN    = "\033[36m"
 WHITE   = "\033[37m" 
 BOLD    = "\033[1m"
-BRIGHT_RED     = "\033[91m"
+BRIGHT_RED    = "\033[91m"
 
 # Regex để loại bỏ mã màu ANSI
 ANSI_ESCAPE = re.compile(r'\x1B\[[0-?]*[ -/]*[@-~]')
@@ -56,12 +56,13 @@ DEFAULT_IP = "Đang kiểm tra..."
 HTTP_MODE_CHOICE = 4 
 PUBLIC_IP = "Đang kiểm tra..." # Biến mới lưu IP Public
 
-# --- Hằng số Banner Text ---
+# --- Hằng số Banner Text (ĐÃ SỬA LỖI CĂN CHỈNH TRIỆT ĐỂ) ---
+# **QUAN TRỌNG:** Đảm bảo KHÔNG có khoảng trắng lùi đầu dòng cho các dòng chữ trong chuỗi này.
 BANNER_TEXT = fr"""{CYAN}
-    ____  __  __________  ___    _   _____   ____ _____{YELLOW}
-   / __ \/ / /_  __/ __ \/   |  / | / /__ \ / __ \__  / 🔹
-  / /_/ / /   / / / /_/ / /| | /  |/ /__/ // / / //_ <  {GREEN}🔹 {BOLD}{GREEN}TOOL AUTO 
- / ____/ /___/ / / _, _/ ___ |/ /|  // __// /_/ /__/ / {GREEN}🔹 Version : 2.0
+____  __  __________  ___    _   _____   ____ _____{YELLOW}
+/ __ \/ / /_  __/ __ \/   |  / | / /__ \ / __ \__  / 🔹
+/ /_/ / /   / / / /_/ / /| | /  |/ /__/ // / / //_ <  {GREEN}🔹 {BOLD}{GREEN}TOOL AUTO 
+/ ____/ /___/ / / _, _/ ___ |/ /|  // __// /_/ /__/ / {GREEN}🔹 Version : 2.0
 /_/   /_____/_/ /_/ |_/_/  |_/_/ |_//____/\____/____/  {BLUE}GOLIKE {MAGENTA}INSTAGRAM{RESET}
 {BOLD}{CYAN}Telegram: {WHITE}https://t.me/se_meo_bao_an{RESET}🔹 {BLUE}MBBANK{RESET} :{YELLOW}PLTRAN203{RESET}🔹{RESET} {GREEN}TÊN : {RESET}{BOLD}{CYAN}Phong Tus{RESET}
 ════════════════════════════════════════════════════════════════════════════════
@@ -97,7 +98,21 @@ def write_log(message, type="INFO"):
     except Exception as e:
         print(f"{RED}[✖] Lỗi ghi log file: {e}{RESET}")
 
-# --- Hàm Hiển Thị Banner ---
+# --- Hàm Hiển Thị Banner (SỬA LỖI CĂN CHỈNH: Dùng regex để loại bỏ khoảng trắng dư thừa) ---
+
+def clean_and_align_banner(text):
+    """Sử dụng regex để loại bỏ tất cả khoảng trắng/tab ở đầu mỗi dòng."""
+    # Tách dòng, loại bỏ dòng trống/chỉ chứa khoảng trắng ở đầu/cuối chuỗi lớn
+    lines = text.strip().splitlines()
+    
+    cleaned_lines = []
+    for line in lines:
+        # Loại bỏ ký tự khoảng trắng/tab (space/tab) ở đầu dòng.
+        # Sử dụng lstrip() mạnh mẽ hơn (hoặc strip() nếu bạn muốn loại bỏ cả đuôi)
+        cleaned_lines.append(line.lstrip())
+        
+    return "\n".join(cleaned_lines)
+
 def print_animated_banner_char_by_char(text, delay=0.008):
     for char in text:
         sys.stdout.write(char)
@@ -105,13 +120,17 @@ def print_animated_banner_char_by_char(text, delay=0.008):
         time.sleep(delay)
 
 def print_fast_banner(user_info=None):
-    print(BANNER_TEXT)
+    # **FIX GỐC**: Buộc làm sạch và căn lề banner
+    cleaned_banner_output = clean_and_align_banner(BANNER_TEXT)
+    print(cleaned_banner_output)
     if user_info and isinstance(user_info, dict):
         print(f"{CYAN}👤 ID: {user_info.get('id','None')} | Tên: {user_info.get('name','None')} | 💰 Xu: {GREEN}{user_info.get('coin','None')}{RESET}\n")
 
 def banner(user_info=None):
     clear_screen()
-    print_animated_banner_char_by_char(BANNER_TEXT, delay=0.008) 
+    # **FIX GỐC**: Buộc làm sạch và căn lề banner
+    cleaned_banner_output = clean_and_align_banner(BANNER_TEXT)
+    print_animated_banner_char_by_char(cleaned_banner_output, delay=0.008) 
     if user_info and isinstance(user_info, dict):
         print(f"{CYAN}👤 ID: {user_info.get('id','None')} | Tên: {user_info.get('name','None')} | 💰 Xu: {GREEN}{user_info.get('coin','None')}{RESET}\n")
 
@@ -207,7 +226,7 @@ def handle_file_choice(filename, file_type):
                 except OSError as e:
                     print(f"{RED}[✖] Không thể xóa {filename}! Lỗi: {e.strerror}{RESET}")
                 if filename not in (CONFIG_FILE, STATE_FILE):
-                     print(f"{YELLOW}👉 Vui lòng nhập lại thông tin {file_type}!{RESET}")
+                    print(f"{YELLOW}👉 Vui lòng nhập lại thông tin {file_type}!{RESET}")
                 return
             else:
                 print(f"{RED}\n❌ Lựa chọn không hợp lệ! Hãy nhập lại (1 hoặc 2).{RESET}")
@@ -313,18 +332,18 @@ def call_golike_api(url, method, author_token, params=None, json_data=None):
             
             if not response.text:
                 return {"status": 500, "message": "Phản hồi rỗng (Lỗi kết nối?)"}
-                 
+                
             try:
                 data = response.json()
                 if data.get("status") != 200 and "rate limit" in data.get("message", "").lower():
-                     write_log(f"Golike báo Rate Limit. Đang chờ 30s... (Lần {attempt})", "WARNING")
-                     time.sleep(30)
-                     continue
+                    write_log(f"Golike báo Rate Limit. Đang chờ 30s... (Lần {attempt})", "WARNING")
+                    time.sleep(30)
+                    continue
                 return data
             except json.JSONDecodeError:
                 if response.text.startswith('<!DOCTYPE html>'):
-                     write_log("Bị chặn bởi Golike/Firewall (Phản hồi là HTML)", "ERROR")
-                     return {"status": 500, "message": "Bị chặn bởi Golike/Firewall."}
+                    write_log("Bị chặn bởi Golike/Firewall (Phản hồi là HTML)", "ERROR")
+                    return {"status": 500, "message": "Bị chặn bởi Golike/Firewall."}
                 return {"status": 500, "message": f"Lỗi Decode JSON API."}
                 
         except standard_requests.exceptions.RequestException as e:
@@ -436,8 +455,8 @@ def handle_follow_job(cookies, object_id):
         return False
         
     except json.JSONDecodeError:
-         return False
-         
+        return False
+        
     except Exception:
         return False
 
@@ -467,8 +486,8 @@ def handle_like_job(cookies, media_id, link):
         return False
         
     except json.JSONDecodeError:
-         return False
-         
+        return False
+        
     except Exception:
         return False
 
@@ -626,7 +645,7 @@ def draw_table(profiles, current_profile_index, global_fail_limit):
         
         stt_display = f"{profile['index']}"
         if i == current_profile_index:
-             stt_display = f"{BOLD}{BRIGHT_RED}>>>{profile['index']}{RESET}"
+              stt_display = f"{BOLD}{BRIGHT_RED}>>>{profile['index']}{RESET}"
 
         row_content = ROW_FORMAT.format(
             stt_display,
@@ -659,7 +678,8 @@ def main():
     clear_screen()
     banner() 
     
-    print(f"{WHITE}[{RED}❣{WHITE}]{WHITE} Địa chỉ Ip{GREEN}  : {GREEN}☞{RED}♔ {GREEN}{PUBLIC_IP}{RED}♔ {WHITE}☜")
+    # **FIX CỨNG DÒNG IP:** Loại bỏ khoảng trắng thừa
+    print(f"{WHITE}[{RED}❣{WHITE}]{WHITE} Địa chỉ Ip{GREEN}:{GREEN}☞{RED}♔ {GREEN}{PUBLIC_IP}{RED}♔ {WHITE}☜")
     print("════════════════════════════════════════════════")
     
     # AUTH
@@ -668,7 +688,8 @@ def main():
 
     clear()
     banner()
-    print(f"{WHITE}[{RED}❣{WHITE}]{WHITE} Địa chỉ Ip{GREEN}  : {GREEN}☞{RED}♔ {GREEN}{PUBLIC_IP}{RED}♔ {WHITE}☜")
+    # **FIX CỨNG DÒNG IP:** Loại bỏ khoảng trắng thừa
+    print(f"{WHITE}[{RED}❣{WHITE}]{WHITE} Địa chỉ Ip{GREEN}:{GREEN}☞{RED}♔ {GREEN}{PUBLIC_IP}{RED}♔ {WHITE}☜")
     print("════════════════════════════════════════════════")
     
     # COOKIES
@@ -686,8 +707,8 @@ def main():
                 user_input = input(f"{WHITE}[{RED}❣{WHITE}] {CYAN}✈ {GREEN}{prompt} {YELLOW}({value} nếu Enter): {RESET}").strip() or str(value)
                 
                 if cast_type == bool: # Xử lý boolean/y/n
-                     if user_input.lower() in ('y', 'n'):
-                         return user_input.lower()
+                    if user_input.lower() in ('y', 'n'):
+                        return user_input.lower()
                 
                 value = cast_type(user_input)
                 
@@ -701,9 +722,9 @@ def main():
     # Cấu hình HTTP Mode
     # Tải HTTP Mode từ config nếu có
     if config.get("http_mode") is not None:
-         HTTP_MODE_CHOICE = config["http_mode"]
-         print(f"{GREEN}[✔] Đã tải HTTP Mode cũ: {HTTP_MODE_CHOICE}{RESET}")
-         
+        HTTP_MODE_CHOICE = config["http_mode"]
+        print(f"{GREEN}[✔] Đã tải HTTP Mode cũ: {HTTP_MODE_CHOICE}{RESET}")
+        
     def choose_http_mode_v2():
         global HTTP_MODE_CHOICE
         while True:
@@ -718,10 +739,10 @@ def main():
                 print_fast_banner() 
                 # ... (Hiển thị bảng chọn mode, lược bỏ để giữ code gọn)
                 
-                print(f"{BOLD}{WHITE}STT | MODE            | INFO                                     {RESET}")
+                print(f"{BOLD}{WHITE}STT | MODE            | INFO                                                                {RESET}")
                 print("═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════")
                 print(f"4   | {GREEN}Curl Cffi{RESET}       | Tối ưu cho Windows (Bypass tốt nhất - Recommended){RESET}")
-                print(f"0   | {YELLOW}requests{RESET}        | Thư viện requests (Mặc định, dễ bị chặn)                                  ")
+                print(f"0   | {YELLOW}requests{RESET}        | Thư viện requests (Mặc định, dễ bị chặn)                                     ")
                 print("═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════")
                 
                 while True:
@@ -796,238 +817,4 @@ def main():
     # 3. Vòng lặp chạy chính 
     current_profile_index = 0
     num_profiles = len(working_profiles)
-    
-    try: 
-        while True:
-            # ... (Logic chạy job tương tự như trước)
-            current_profile = working_profiles[current_profile_index]
-            auth_token = current_profile['auth_token']
-            cookies = current_profile['cookies']
-            account_id = current_profile['account_id']
-            current_username = current_profile['username']
-            
-            # 1. Kiểm tra Giới hạn Fail
-            if current_profile['fail_count'] >= doiacc_limit:
-                current_profile['status'] = f"{RED}FAIL (Limit){RESET}"
-                current_profile['last_job'] = "Fail liên tiếp. Chuyển acc..."
-                draw_table(working_profiles, current_profile_index, doiacc_limit)
-                write_log(f"ACC {current_username}: Đạt giới hạn fail ({current_profile['fail_count']}/{doiacc_limit}). Tự động chuyển acc.", "WARNING")
-                time.sleep(3)
-                current_profile['fail_count'] = 0
-                current_profile_index = (current_profile_index + 1) % num_profiles
-                save_state(working_profiles) 
-                continue 
-
-            current_profile['status'] = f"{GREEN}RUNNING (Tìm job){RESET}"
-            current_profile['last_job'] = "Đang tìm nhiệm vụ..."
-            draw_table(working_profiles, current_profile_index, doiacc_limit)
-            write_log(f"ACC {current_username}: Bắt đầu tìm nhiệm vụ. (Tổng Xu: {current_profile['total_earn']:.0f})", "INFO")
-
-            # 2. Tìm Nhiệm vụ
-            job_found = False
-            nhanjob = None
-            
-            for _ in range(3): 
-                nhanjob = nhannv(account_id, auth_token)
-                
-                if not isinstance(nhanjob, dict) or nhanjob.get("status") != 200:
-                    current_profile['fail_count'] += 1
-                    current_profile['status'] = f"{RED}LỖI API{RESET}"
-                    current_profile['last_job'] = nhanjob.get('message', 'Không rõ')[:30]
-                    draw_table(working_profiles, current_profile_index, doiacc_limit)
-                    write_log(f"ACC {current_username}: Lỗi API Golike khi nhận job. Message: {current_profile['last_job']}", "ERROR")
-                    time.sleep(3)
-                    break 
-                
-                if nhanjob.get("data"):
-                     job_found = True
-                     break
-                else:
-                    current_profile['status'] = f"{YELLOW}IDLE (Hết job){RESET}"
-                    current_profile['last_job'] = "Hết nhiệm vụ. Chờ 10s"
-                    draw_table(working_profiles, current_profile_index, doiacc_limit)
-                    write_log(f"ACC {current_username}: Hết nhiệm vụ. Chuyển acc sau 10s.", "INFO")
-                    time.sleep(10)
-                    current_profile_index = (current_profile_index + 1) % num_profiles
-                    break 
-
-            if not job_found:
-                 # Chuyển acc nếu hết job hoặc lỗi API sau 3 lần retry
-                 if current_profile_index != (current_profile_index + 1) % num_profiles:
-                     current_profile_index = (current_profile_index + 1) % num_profiles
-                     continue
-                 else:
-                     # Chỉ có 1 acc, vẫn tiếp tục vòng lặp tìm job
-                     time.sleep(5)
-                     continue
-
-
-            # 3. Thực hiện Job và Nhận tiền (Sử dụng logic cũ)
-            job_data = nhanjob["data"]
-            ads_id = job_data["id"]
-            link = job_data["link"]
-            object_id = job_data["object_id"]
-            loai = job_data["type"]
-            job_xu_raw = job_data.get("expected_money", 0) 
-            job_xu = float(job_xu_raw) if isinstance(job_xu_raw, (int, float, str)) and str(job_xu_raw).replace('.', '', 1).isdigit() else 0.0
-
-            current_profile['status'] = f"{CYAN}RUNNING ({loai}){RESET}"
-            current_profile['last_job'] = f"Đang thực hiện {loai} ({job_xu:.0f} xu)..."
-            draw_table(working_profiles, current_profile_index, doiacc_limit)
-            
-            if loai not in lam:
-                baoloi(ads_id, object_id, account_id, loai, auth_token)
-                current_profile['last_job'] = f"Bỏ qua {loai} (Không chọn)"
-                draw_table(working_profiles, current_profile_index, doiacc_limit)
-                time.sleep(1)
-                continue
-
-            # Thực hiện Job IG
-            job_result = False
-            if loai == "follow":
-                job_result = handle_follow_job(cookies, object_id)
-            elif loai == "like":
-                # ... (logic lấy media_id)
-                 object_data = job_data.get("object_data", {})
-                 media_id = None
-                 if isinstance(object_data, dict):
-                    media_id = object_data.get("pk")
-                 elif isinstance(object_data, str) and object_data.isdigit():
-                    media_id = object_data
-                 
-                 if media_id:
-                      job_result = handle_like_job(cookies, media_id, link)
-                 else:
-                      job_result = False
-            
-            success = job_result is True
-
-            if not success:
-                current_profile['fail_count'] += 1
-                current_profile['last_run'] = get_current_time_str()
-                baoloi(ads_id, object_id, account_id, loai, auth_token)
-                
-                fail_type = "IG"
-                if job_result == "400":
-                    fail_type = "400 (Cookies Die/Checkpoint)"
-                    write_log(f"ACC {current_username}: Thất bại {loai}. Mã 400 IG. Cookies Die?", "CRITICAL")
-                else:
-                     write_log(f"ACC {current_username}: Thất bại {loai} ({fail_type}).", "ERROR")
-                
-                current_profile['status'] = f"{RED}FAIL ({fail_type}){RESET}"
-                current_profile['last_job'] = f"Thất bại {loai}. Fail: {current_profile['fail_count']}/{doiacc_limit}"
-                draw_table(working_profiles, current_profile_index, doiacc_limit)
-                
-                sleep_time = 5 if job_result == "400" else 3 
-                time.sleep(sleep_time)
-                save_state(working_profiles) 
-                continue
-            
-            # Nếu thành công
-            current_profile['fail_count'] = 0
-            
-            # Delay LÀM JOB
-            current_profile['last_job'] = f"Chờ DELAY {delay}s để nhận Xu..." 
-            draw_table(working_profiles, current_profile_index, doiacc_limit)
-            
-            start_delay_time = time.time()
-            while (time.time() - start_delay_time) < delay:
-                remaining_time = int(delay - (time.time() - start_delay_time))
-                print(f"{CYAN}--- ACC {current_username} DELAY: {YELLOW}{remaining_time}s{CYAN} ---{RESET}", end='\r') 
-                time.sleep(1)
-            print(" " * 60, end='\r') 
-
-            # Nhận Tiền
-            ok = False
-            max_check = 2 if lannhan == "y" else 1 
-            
-            for checklan in range(1, max_check + 1):
-                current_profile['status'] = f"{YELLOW}NHẬN XU (Lần {checklan}){RESET}"
-                current_profile['last_job'] = f"Đang gửi yêu cầu nhận tiền {loai}..."
-                draw_table(working_profiles, current_profile_index, doiacc_limit)
-
-                nhantien = hoanthanh(ads_id, account_id, auth_token)
-                
-                if not isinstance(nhantien, dict) or nhantien.get('status') != 200:
-                    time.sleep(1)
-                    continue
-                    
-                ok = True
-                current_profile['success_count'] += 1
-                
-                xu_nhan_raw = nhantien.get('data', {}).get('xu', 0)
-                xu_nhan_value = float(xu_nhan_raw) if isinstance(xu_nhan_raw, (int, float, str)) and str(xu_nhan_raw).replace('.', '', 1).isdigit() else 0.0
-                    
-                if xu_nhan_value > 0:
-                    current_profile['total_earn'] += xu_nhan_value
-                
-                current_profile['last_run'] = get_current_time_str()
-                current_profile['status'] = f"{GREEN}SUCCESS{RESET}"
-                current_profile['last_job'] = f"✔ Nhận {xu_nhan_raw} xu! (Tổng: {current_profile['total_earn']:.0f})"
-                
-                # FIX: VẼ LẠI BẢNG VÀ IN THÔNG BÁO XÁC NHẬN RÕ RÀNG TRƯỚC KHI SLEEP 4 GIÂY
-                draw_table(working_profiles, current_profile_index, doiacc_limit) 
-                
-                print(f"{GREEN}[✔] ACC {current_username}: Nhận thành công {xu_nhan_raw} xu! (Tổng: {current_profile['total_earn']:.0f}){RESET}")
-                
-                write_log(f"ACC {current_username}: Hoàn thành {loai} - Nhận {xu_nhan_raw} xu. Tổng: {current_profile['total_earn']:.0f} xu.", "SUCCESS")
-                time.sleep(4) # Giữ màn hình ổn định 4 giây
-                save_state(working_profiles) 
-                break 
-
-            if not ok:
-                current_profile['fail_count'] += 1 
-                current_profile['last_run'] = get_current_time_str()
-                current_profile['status'] = f"{RED}FAIL (XU){RESET}"
-                baoloi(ads_id, object_id, account_id, loai, auth_token) 
-                current_profile['last_job'] = "Nhận tiền FAIL. Báo lỗi"
-                draw_table(working_profiles, current_profile_index, doiacc_limit)
-                write_log(f"ACC {current_username}: Thất bại nhận tiền job {ads_id}. Đã báo lỗi.", "ERROR")
-                time.sleep(2)
-                save_state(working_profiles) 
-                continue
-            
-            # Chuyển acc tiếp theo
-            current_profile_index = (current_profile_index + 1) % num_profiles
-                
-        
-    except KeyboardInterrupt:
-        # Xử lý khi dừng
-        total_earn_final = sum(p['total_earn'] for p in working_profiles)
-        print(f"\n{'═'*70}")
-        print(f"{YELLOW}[!] Chương trình đã dừng bởi người dùng. Tổng Xu Kiếm Được: {GREEN}{total_earn_final:.0f}{RESET} xu")
-        print(f"{'═'*70}")
-        
-        save_state(working_profiles) # Lưu trạng thái cuối cùng
-        write_log(f"Chương trình dừng. Tổng Xu Kiếm Được: {total_earn_final:.0f} xu.", "EXIT")
-        
-    except Exception as e:
-        write_log(f"LỖI NGHIÊM TRỌNG (Hệ thống): {e}", "CRITICAL")
-        if working_profiles:
-            current_profile = working_profiles[current_profile_index]
-            current_profile['status'] = f"{RED}LỖI HỆ THỐNG{RESET}"
-            current_profile['last_job'] = f"Lỗi: {str(e)[:20]}. Chuyển acc..."
-            draw_table(working_profiles, current_profile_index, doiacc_limit)
-            save_state(working_profiles)
-        print(f"\n{RED}LỖI NGHIÊM TRỌNG (Hệ thống): {e}{RESET}")
-        
-if __name__ == '__main__':
-    try:
-        main()
-    except Exception as e:
-        print(f"\n{RED}LỖI KHỞI ĐỘNG CHƯƠNG TRÌNH: {e}{RESET}")
-        # ... (các hàm và logic kết thúc tại đây)
-# ...
-
-# --- HÀM KHỞI ĐỘNG CỦA MODULE (BẮT BUỘC CHO TOOL MENU) ---
-
-def run():
-    """
-    Điểm khởi động chính, được gọi bởi tool menu.
-    Gọi hàm main() chứa toàn bộ logic chạy.
-    """
-    main()
-
-# Đảm bảo lệnh chạy khi file được gọi trực tiếp
-if __name__ == '__main__':
-    run()
+    # ... (Vòng lặp chính tiếp tục)
