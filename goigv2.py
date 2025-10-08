@@ -1017,3 +1017,18 @@ if __name__ == '__main__':
         main()
     except Exception as e:
         print(f"\n{RED}LỖI KHỞI ĐỘNG CHƯƠNG TRÌNH: {e}{RESET}")
+        # ... (các hàm và logic kết thúc tại đây)
+# ...
+
+# --- HÀM KHỞI ĐỘNG CỦA MODULE (BẮT BUỘC CHO TOOL MENU) ---
+
+def run():
+    """
+    Điểm khởi động chính, được gọi bởi tool menu.
+    Gọi hàm main() chứa toàn bộ logic chạy.
+    """
+    main()
+
+# Đảm bảo lệnh chạy khi file được gọi trực tiếp
+if __name__ == '__main__':
+    run()
