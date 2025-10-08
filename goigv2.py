@@ -56,12 +56,13 @@ DEFAULT_IP = "Đang kiểm tra..."
 HTTP_MODE_CHOICE = 4 
 PUBLIC_IP = "Đang kiểm tra..." # Biến mới lưu IP Public
 
-# --- Hằng số Banner Text (ĐÃ SỬA LỖI CĂN CHỈNH) ---
+# --- Hằng số Banner Text (ĐÃ SỬA LỖI CĂN CHỈNH TRIỆT ĐỂ) ---
+# **QUAN TRỌNG:** Đảm bảo các dòng code này được căn lề sát bên trái trong file của bạn.
 BANNER_TEXT = fr"""{CYAN}
-    ____  __  __________  ___    _   _____   ____ _____{YELLOW}
-   / __ \/ / /_  __/ __ \/   |  / | / /__ \ / __ \__  / 🔹
-  / /_/ / /   / / / /_/ / /| | /  |/ /__/ // / / //_ <  {GREEN}🔹 {BOLD}{GREEN}TOOL AUTO 
- / ____/ /___/ / / _, _/ ___ |/ /|  // __// /_/ /__/ / {GREEN}🔹 Version : 2.0
+____  __  __________  ___    _   _____   ____ _____{YELLOW}
+/ __ \/ / /_  __/ __ \/   |  / | / /__ \ / __ \__  / 🔹
+/ /_/ / /   / / / /_/ / /| | /  |/ /__/ // / / //_ <  {GREEN}🔹 {BOLD}{GREEN}TOOL AUTO 
+/ ____/ /___/ / / _, _/ ___ |/ /|  // __// /_/ /__/ / {GREEN}🔹 Version : 2.0
 /_/   /_____/_/ /_/ |_/_/  |_/_/ |_//____/\____/____/  {BLUE}GOLIKE {MAGENTA}INSTAGRAM{RESET}
 {BOLD}{CYAN}Telegram: {WHITE}https://t.me/se_meo_bao_an{RESET}🔹 {BLUE}MBBANK{RESET} :{YELLOW}PLTRAN203{RESET}🔹{RESET} {GREEN}TÊN : {RESET}{BOLD}{CYAN}Phong Tus{RESET}
 ════════════════════════════════════════════════════════════════════════════════
@@ -97,7 +98,7 @@ def write_log(message, type="INFO"):
     except Exception as e:
         print(f"{RED}[✖] Lỗi ghi log file: {e}{RESET}")
 
-# --- Hàm Hiển Thị Banner ---
+# --- Hàm Hiển Thị Banner (ĐÃ SỬA LỖI CĂN CHỈNH TRIỆT ĐỂ) ---
 def print_animated_banner_char_by_char(text, delay=0.008):
     for char in text:
         sys.stdout.write(char)
@@ -105,13 +106,17 @@ def print_animated_banner_char_by_char(text, delay=0.008):
         time.sleep(delay)
 
 def print_fast_banner(user_info=None):
-    print(BANNER_TEXT)
+    # SỬA LỖI: Buộc strip khoảng trắng ở đầu và cuối mỗi dòng
+    cleaned_banner_output = "\n".join(line.strip() for line in BANNER_TEXT.strip().splitlines())
+    print(cleaned_banner_output)
     if user_info and isinstance(user_info, dict):
         print(f"{CYAN}👤 ID: {user_info.get('id','None')} | Tên: {user_info.get('name','None')} | 💰 Xu: {GREEN}{user_info.get('coin','None')}{RESET}\n")
 
 def banner(user_info=None):
     clear_screen()
-    print_animated_banner_char_by_char(BANNER_TEXT, delay=0.008) 
+    # SỬA LỖI: Buộc strip khoảng trắng ở đầu và cuối mỗi dòng
+    lines_to_animate = [line.strip() for line in BANNER_TEXT.strip().splitlines()]
+    print_animated_banner_char_by_char("\n".join(lines_to_animate), delay=0.008) 
     if user_info and isinstance(user_info, dict):
         print(f"{CYAN}👤 ID: {user_info.get('id','None')} | Tên: {user_info.get('name','None')} | 💰 Xu: {GREEN}{user_info.get('coin','None')}{RESET}\n")
 
