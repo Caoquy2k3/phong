@@ -66,7 +66,6 @@ BANNER_TEXT = fr"""{CYAN}
 {BOLD}{CYAN}Telegram: {WHITE}https://t.me/se_meo_bao_an{RESET}🔹 {BLUE}MBBANK{RESET} :{YELLOW}PLTRAN203{RESET}🔹{RESET} {GREEN}TÊN : {RESET}{BOLD}{CYAN}Phong Tus{RESET}
 ════════════════════════════════════════════════════════════════════════════════
 {RESET}"""
-
 # --- Hàm Xóa Màn Hình ---
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -1032,5 +1031,6 @@ def run():
 # Đảm bảo lệnh chạy khi file được gọi trực tiếp
 if __name__ == '__main__':
     run()
+
 
 
