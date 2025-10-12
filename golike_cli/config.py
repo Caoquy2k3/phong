@@ -37,6 +37,13 @@ class AppConfig(BaseModel):
 class Config(BaseModel):
     login: LoginConfig = Field(default_factory=LoginConfig)
     app: AppConfig = Field(default_factory=AppConfig)
+    # GoLike API auth and endpoint
+    class AuthConfig(BaseModel):
+        token: Optional[str] = None
+        t: Optional[str] = None
+        base_api_url: str = "https://gateway.golike.net/api"
+
+    auth: AuthConfig = Field(default_factory=AuthConfig)
     storage_state: Path = Field(default=DEFAULT_STORAGE_STATE)
     cookies_path: Path = Field(default=DEFAULT_COOKIES_PATH)
 
@@ -59,6 +66,14 @@ class Config(BaseModel):
         env_pass = os.environ.get("GOLIKE_PASSWORD")
         if env_pass:
             data.setdefault("login", {})["password"] = env_pass
+
+        # API auth overrides
+        env_token = os.environ.get("GOLIKE_TOKEN")
+        if env_token:
+            data.setdefault("auth", {})["token"] = env_token
+        env_t = os.environ.get("GOLIKE_T")
+        if env_t:
+            data.setdefault("auth", {})["t"] = env_t
 
         cfg = Config.model_validate(data)
         # normalize paths

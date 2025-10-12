@@ -10,6 +10,7 @@ from rich.console import Console
 from rich.table import Table
 
 from .config import Config, DEFAULT_CONFIG_PATH
+from .api import GoLikeClient
 from .browser import launch_browser
 
 console = Console()
@@ -34,6 +35,7 @@ def show_config(ctx: click.Context):
     table.add_column("Value")
     table.add_row("login.login_url", cfg.login.login_url)
     table.add_row("app.headless", str(cfg.app.headless))
+    table.add_row("auth.base_api_url", cfg.auth.base_api_url)
     table.add_row("storage_state", str(cfg.storage_state))
     table.add_row("cookies_path", str(cfg.cookies_path))
     console.print(table)
@@ -65,6 +67,82 @@ def login(ctx: click.Context, login_url: Optional[str]):
             console.print(f"Saved storage state to {cfg.storage_state}", style="green")
     asyncio.run(run())
 
+
+@cli.group(help="Manage GoLike API auth (token and t)")
+@click.pass_context
+def auth(ctx: click.Context):
+    pass
+
+
+@auth.command(name="show", help="Show current token/t")
+@click.pass_context
+def auth_show(ctx: click.Context):
+    cfg: Config = ctx.obj["config"]
+    token_preview = (cfg.auth.token[:6] + "..." + cfg.auth.token[-4:]) if cfg.auth.token else None
+    console.print({
+        "base_api_url": cfg.auth.base_api_url,
+        "token": token_preview,
+        "t": cfg.auth.t,
+    })
+
+
+@auth.command(name="set", help="Set token and optional t, save to config")
+@click.option("--token", required=True, help="Bearer token without 'Bearer '")
+@click.option("--t", "tval", required=False, help="Optional header t value")
+@click.option("--config", "config_path", type=click.Path(path_type=Path), default=DEFAULT_CONFIG_PATH)
+@click.pass_context
+def auth_set(ctx: click.Context, token: str, tval: Optional[str], config_path: Path):
+    cfg: Config = ctx.obj["config"]
+    cfg.auth.token = token
+    cfg.auth.t = tval
+    cfg.save(config_path)
+    console.print("Saved auth to config", style="green")
+
+
+@cli.group(help="Instagram endpoints")
+@click.pass_context
+def ig(ctx: click.Context):
+    pass
+
+
+@ig.command(name="accounts", help="List linked Instagram accounts")
+@click.pass_context
+def ig_accounts(ctx: click.Context):
+    cfg: Config = ctx.obj["config"]
+    if not cfg.auth.token:
+        console.print("Set token first: auth set --token ...", style="red")
+        raise SystemExit(1)
+    client = GoLikeClient(base_url=cfg.auth.base_api_url, token=cfg.auth.token, t=cfg.auth.t)
+    accounts = client.list_instagram_accounts()
+    if not accounts:
+        console.print("No accounts found", style="yellow")
+        return
+    table = Table(title="Instagram Accounts")
+    table.add_column("id")
+    table.add_column("instagram_username")
+    for a in accounts:
+        table.add_row(str(a.get("id")), a.get("instagram_username", ""))
+    console.print(table)
+
+
+@ig.command(name="me", help="Show current user profile")
+@click.pass_context
+def ig_me(ctx: click.Context):
+    cfg: Config = ctx.obj["config"]
+    if not cfg.auth.token:
+        console.print("Set token first: auth set --token ...", style="red")
+        raise SystemExit(1)
+    client = GoLikeClient(base_url=cfg.auth.base_api_url, token=cfg.auth.token, t=cfg.auth.t)
+    me = client.get_me()
+    if not me:
+        console.print("No user data", style="yellow")
+        return
+    table = Table(title="User Profile")
+    table.add_column("Field")
+    table.add_column("Value")
+    for k in ("id", "name", "email", "coin"):
+        table.add_row(k, str(me.get(k)))
+    console.print(table)
 
 @cli.command(help="Take a screenshot of a page")
 @click.argument("url")
