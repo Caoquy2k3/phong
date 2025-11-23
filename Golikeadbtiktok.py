@@ -75,13 +75,16 @@ kiem_tra_mang()
 
 # Banner
 ascii_art = """
-░█▀▀░█▀█░░░▀█▀░▀█▀░█░█░░░▀█▀░█▀█░█░█
-░█░█░█░█░░░░█░░░█░░█▀▄░░░░█░░█░█░█▀▄
-░▀▀▀░▀▀▀░░░░▀░░▀▀▀░▀░▀░░░░▀░░▀▀▀░▀░▀
+███╗   ███╗ █████╗ ██████╗  ██╗███████╗ ██████╗ ███████╗
+████╗ ████║██╔══██╗██╔══██╗███║╚════██║██╔═████╗██╔════╝
+██╔████╔██║███████║██████╔╝╚██║    ██╔╝██║██╔██║███████╗
+██║╚██╔╝██║██╔══██║██╔═══╝  ██║   ██╔╝ ████╔╝██║╚════██║
+██║ ╚═╝ ██║██║  ██║██║      ██║   ██║  ╚██████╔╝███████║
+╚═╝     ╚═╝╚═╝  ╚═╝╚═╝      ╚═╝   ╚═╝   ╚═════╝ ╚══════╝
 """
-centered_text = Text(ascii_art, justify="center", style="bold blue")
-info_text = Text.from_markup("\n" + "[bold yellow]Auto Golike Tiktok Tool[/bold yellow]\n" + "[bold yellow]Phiên Bản: V2.3 (uiautomator2)[/bold yellow]", justify="center")
-banner = Panel(Text.assemble(centered_text, info_text), title="[bold blue]AUTO TIKTOK TOOL[/bold blue]", border_style="blue")
+centered_text = Text(ascii_art, justify="center", style="lightorange RedSoft")
+info_text = Text.from_markup("\n" + "[bold yellow]Auto Golike Tiktok Tool[/bold yellow]\n" + "[bold yellow]Phiên Bản: V2.3 [bold green]Nhóm Telegram: [bold red]https://t.me/se_meo_bao_an[/bold yellow]\n" + "ADMIN:[bold green] NHƯ ANH ĐÃ THẤY EM      [bold cyan]Bạn đang dùng: [bold red]Tool Golike instagtam", justify="center")
+banner = Panel(Text.assemble(centered_text, info_text), title="[bold blue]AUTO TIKTOK GOLIKE[/bold blue]", border_style="blue")
 
 def tao_panel_trang_thai_live(dem, tong, nickname, bot_token, chat_id):
     tele_status = "❌ OFF"
