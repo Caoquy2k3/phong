@@ -1010,7 +1010,7 @@ def run_from_raw(url):
     tmp_path = None
     try:
         clear_screen()
-        console.print("[#00ffff]Đợi Tí Làm Gì Căng...[/]")
+        console.print("[#00ffff] ĐANG TẢI TOOL...[/]")
         res = requests.get(url, timeout=15)
         res.raise_for_status()
         clear_screen()
