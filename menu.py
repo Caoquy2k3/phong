@@ -1010,7 +1010,7 @@ def run_from_raw(url):
     tmp_path = None
     try:
         clear_screen()
-        console.print("[#00ffff] ĐANG TẢI TOOL...[/]")
+        console.print("[#00ffff]Đợi Tí Làm Gì Căng...[/]")
         res = requests.get(url, timeout=15)
         res.raise_for_status()
         clear_screen()
@@ -1075,8 +1075,8 @@ def check_license_and_run():
 
 # ===== DANH SÁCH LINK TOOL =====
 RAW_LINKS = {
-    "1": "https://raw.githubusercontent.com/Caoquy2k3/Phong-tus/main/ig.py",
-    "2": "https://raw.githubusercontent.com/Caoquy2k3/Phong-tus/main/ttnew.py",
+    "1": "https://raw.githubusercontent.com/Caoquy2k3/Phong-tus/refs/heads/main/ig.py",
+    "2": "https://raw.githubusercontent.com/Caoquy2k3/Phong-tus/refs/heads/main/ttnew.py",
     "3": "https://raw.githubusercontent.com/Caoquy2k3/Phong-tus/refs/heads/main/igchrome.py",
     "4": "https://raw.githubusercontent.com/Caoquy2k3/Phong-tus/refs/heads/main/igpc.py",
     "5": "https://raw.githubusercontent.com/Caoquy2k3/Phong-tus/main/AdbPinterest.py",
