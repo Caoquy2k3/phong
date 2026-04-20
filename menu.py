@@ -57,6 +57,12 @@ LINK4M_API_KEY = "68b724432ecbb063ee12123a"
 KEY_WEB_URL = "https://caoquy2k3.github.io/Phong-tus/"
 SETUP_JSON_URL = "https://raw.githubusercontent.com/Caoquy2k3/Phong-tus/refs/heads/main/setup.json"
 
+# ===== CẤU HÌNH THƯ MỤC DATA =====
+DATA_DIR = "data"
+os.makedirs(DATA_DIR, exist_ok=True)
+GUI_PNG_PATH = os.path.join(DATA_DIR, "gui.png")
+GUI_URL = "https://raw.githubusercontent.com/Caoquy2k3/Phong-tus/refs/heads/main/gui.png"
+
 # ===== KEYS =====
 SPECIAL_KEY_20032007 = "20032007"  # Key này sẽ bị xóa sau 1.5h
 ADMIN_KEY_PHONGANH = "phonganh"   # Key admin mới, vĩnh viễn, không giới hạn
@@ -964,7 +970,7 @@ def create_menu_table():
 
 def create_footer():
     return Panel(
-        "[#888888]Nhập số để chọn tool (0 thoát) - [#00ffff]https://t.me/se_meo_bao_an[/]",
+        "[#ffffff]Nhập số để chọn tool (0 thoát) - [#00ffff]https://t.me/se_meo_bao_an[/]",
         border_style="#a78bfa",
         box=box.ROUNDED,
         width=70,
@@ -1111,7 +1117,7 @@ if __name__ == "__main__":
             console.print(create_menu_table())
             console.print(create_footer())
 
-            console.print("[#ff9ecb]➤[/] [bold #ffffff]Chọn[/] ([#00ffff]0 để thoát[/]): [#ffffff]", end="")
+            console.print("[#ff9ecb]➤[/] [bold #ffffff]Chọn[/] [ [#00ffff]0 để thoát[/] ]: [#ffffff]", end="")
             choice = input().strip()
 
             if choice in ("0", "q", "quit", "exit"):
