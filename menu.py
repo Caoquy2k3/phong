@@ -435,7 +435,7 @@ class LicenseManager:
         
         # Key admin phonganh - vĩnh viễn
         if self._key_data.get("is_admin") and self._key_data.get("key") == self.admin_key_phonganh:
-            return "[#00ff9c]👑 ADMIN  [ phonganh ] - Vĩnh viễn[/]"
+            return "[#00ff9c]👑 KEY ADMIN  [ phonganh ] - Vĩnh viễn[/]"
         
         # Key 20032007 - hiển thị thời gian còn lại đến khi xóa file
         if self._key_data.get("is_special_20032007"):
@@ -862,88 +862,75 @@ class LicenseManager:
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-
+import platform
 def banner():
     os.system('clear' if os.name == 'posix' else 'cls')
-    banner_text = """
-      \033[38;2;153;51;255m▄▄▄█████▓ █    ██   ██████    ▄▄▄█████▓ ▒█████   ▒█████   ██▓
-      \033[38;2;170;70;255m▓  ██▒ ▓▒ ██  ▓██▒▒██    ▒    ▓  ██▒ ▓▒▒██▒  ██▒▒██▒  ██▒▓██▒
-      \033[38;2;190;90;255m▒ ▓██░ ▒░▓██  ▒██░░ ▓██▄      ▒ ▓██░ ▒░▒██░  ██▒▒██░  ██▒▒██░
-      \033[38;2;210;110;240m░ ▓██▓ ░ ▓▓█  ░██░  ▒   ██▒   ░ ▓██▓ ░ ▒██   ██░▒██   ██░▒██░
-      \033[38;2;230;130;220m  ▒██▒ ░ ▒▒█████▓ ▒██████▒▒     ▒██▒ ░ ░ ████▓▒░░ ████▓▒░░██████▒
-      \033[38;2;240;150;200m  ▒ ░░   ░▒▓▒ ▒ ▒ ▒ ▒▓▒ ▒ ░     ▒ ░░   ░ ▒░▒░▒░ ░ ▒░▒░▒░ ░ ▒░▓  ░
-      \033[38;2;200;200;255m    ░    ░░▒░ ░ ░ ░ ░▒  ░ ░       ░      ░ ▒ ▒░   ░ ▒ ▒░ ░ ░ ▒  ░
-      \033[38;2;150;230;255m  ░       ░░░ ░ ░ ░  ░  ░       ░      ░ ░ ░ ▒  ░ ░ ░ ▒    ░ ░
-      \033[38;2;120;255;230m            ░           ░                  ░ ░      ░ ░      ░  ░
+
+    # ===== MÀU =====
+    COLOR_DEVICE_INFO = "\033[38;2;255;200;140m"
+    COLOR_KEY = "\033[38;2;200;160;255m"
+    COLOR_VALUE = "\033[38;2;120;255;220m"
+    COLOR_RESET = "\033[0m"
+    COLOR_LINE = "\033[38;2;190;235;210m"
+
+    # ===== HELPER =====
+    def LOGO_TEXT(key, value):
+        print(f"{COLOR_DEVICE_INFO}[</>] {COLOR_KEY}{key}: {COLOR_VALUE}{value}{COLOR_RESET}")
+
+    def draw_full_width_box(text):
+        width = 70
+        print(f"{COLOR_VALUE}{text.center(width)}{COLOR_RESET}")
+        print(f"{COLOR_LINE}{'─'*width}{COLOR_RESET}")
+
+    def split_terminal():
+        print()
+
+    # ===== BANNER ASCII =====
+    print(u"""
+\033[38;2;153;51;255m▄▄▄█████▓ █    ██   ██████    ▄▄▄█████▓ ▒█████   ▒█████   ██▓
+\033[38;2;170;70;255m▓  ██▒ ▓▒ ██  ▓██▒▒██    ▒    ▓  ██▒ ▓▒▒██▒  ██▒▒██▒  ██▒▓██▒
+\033[38;2;190;90;255m▒ ▓██░ ▒░▓██  ▒██░░ ▓██▄      ▒ ▓██░ ▒░▒██░  ██▒▒██░  ██▒▒██░
+\033[38;2;210;110;240m░ ▓██▓ ░ ▓▓█  ░██░  ▒   ██▒   ░ ▓██▓ ░ ▒██   ██░▒██   ██░▒██░
+\033[38;2;230;130;220m  ▒██▒ ░ ▒▒█████▓ ▒██████▒▒     ▒██▒ ░ ░ ████▓▒░░ ████▓▒░░██████▒
+\033[38;2;240;150;200m  ▒ ░░   ░▒▓▒ ▒ ▒ ▒ ▒▓▒ ▒ ░     ▒ ░░   ░ ▒░▒░▒░ ░ ▒░▒░▒░ ░ ▒░▓  ░
+\033[38;2;200;200;255m    ░    ░░▒░ ░ ░ ░ ░▒  ░ ░       ░      ░ ▒ ▒░   ░ ▒ ▒░ ░ ░ ▒  ░
+\033[38;2;150;230;255m  ░       ░░░ ░ ░ ░  ░  ░       ░      ░ ░ ░ ▒  ░ ░ ░ ▒    ░ ░
+\033[38;2;120;255;230m            ░           ░                  ░ ░      ░ ░      ░  ░
 \033[0m
-\033[38;2;255;200;140m[</>] \033[38;2;200;160;255mADMIN:\033[38;2;255;235;180m NHƯ ANH ĐÃ THẤY EM   \033[38;2;255;220;160mPhiên Bản: \033[38;2;120;255;220mv3.14
-\033[38;2;255;200;140m[</>] \033[38;2;200;160;255mNhóm Telegram: \033[38;2;120;255;220mhttps://t.me/se_meo_bao_an
-\033[38;2;190;235;210m───────────────────────────────────────────────────────────────────────\033[0m
-"""
-    print(banner_text)
+""")
 
+    # ===== INFO =====
+    print(f"{COLOR_DEVICE_INFO}[</>] {COLOR_KEY}ADMIN: NHƯ ANH ĐÃ THẤY EM   {COLOR_DEVICE_INFO}Phiên Bản: {COLOR_VALUE}v3.25{COLOR_RESET}")
+    print(f"{COLOR_DEVICE_INFO}[</>] {COLOR_KEY}Nhóm Telegram: {COLOR_VALUE}https://t.me/se_meo_bao_an{COLOR_RESET}")
 
-def get_ip_info():
+    print(f"{COLOR_LINE}{'─'*70}{COLOR_RESET}")
+
+    # ===== THÔNG TIN THIẾT BỊ =====
+    draw_full_width_box("THÔNG TIN THIẾT BỊ")
+
+    LOGO_TEXT("Hệ điều hành", str(platform.system()))
+
     try:
-        # Lấy IP bằng ipify
-        response = requests.get("https://api.ipify.org?format=json", timeout=6)
-        data = response.json()
-        ip_address = data.get('ip')
-        
-        if not ip_address:
-            ip_address = "Không xác định"
-            console.print(Text("IP: ", style="#a78bfa") + Text(f"{ip_address} ", style="#ffffff"))
-            return
-            
-        # Lấy thông tin vị trí từ ip-api.com
-        try:
-            location_response = requests.get(f"http://ip-api.com/json/{ip_address}", timeout=6)
-            location_data = location_response.json()
-            
-            ip_text = Text()
-            ip_text.append("IP: ", style="#a78bfa")
-            ip_text.append(f"{ip_address} ", style="#ffffff")
-            
-            if location_data.get('status') == 'success':
-                city = location_data.get('city')
-                country_code = location_data.get('countryCode')
-                
-                if city:
-                    ip_text.append("| TP: ", style="#ff9ecb")
-                    ip_text.append(f"{city} ", style="#ffffff")
-                else:
-                    ip_text.append("| TP: ", style="#ff9ecb")
-                    ip_text.append("Không rõ ", style="#ffffff")
-                    
-                if country_code:
-                    ip_text.append("| QG: ", style="#00ffff")
-                    ip_text.append(f"{country_code}", style="#ffffff")
-                else:
-                    ip_text.append("| QG: ", style="#00ffff")
-                    ip_text.append("Không rõ", style="#ffffff")
-            else:
-                ip_text.append("| TP: ", style="#ff9ecb")
-                ip_text.append("Không rõ ", style="#ffffff")
-                ip_text.append("| QG: ", style="#00ffff")
-                ip_text.append("Không rõ", style="#ffffff")
-                
-            console.print(ip_text)
-            
-        except Exception:
-            # Fallback khi lỗi lấy vị trí
-            ip_text = Text()
-            ip_text.append("IP: ", style="#a78bfa")
-            ip_text.append(f"{ip_address} ", style="#ffffff")
-            ip_text.append("| TP: ", style="#ff9ecb")
-            ip_text.append("Không rõ ", style="#ffffff")
-            ip_text.append("| QG: ", style="#00ffff")
-            ip_text.append("Không rõ", style="#ffffff")
-            console.print(ip_text)
-            
-    except Exception:
-        console.print("[#ff4d6d]Lỗi lấy IP: Mạng không ổn định hoặc bị chặn.[/]")
+        info_ip = requests.get("http://ip-api.com/json", timeout=5)
+        if info_ip.status_code == 200:
+            data = info_ip.json()
+            LOGO_TEXT("IP", data.get('query'))
+            LOGO_TEXT("Khu Vực", data.get('regionName'))
+            LOGO_TEXT("Isp", data.get('isp'))
+            LOGO_TEXT("Nhà Mạng", data.get('org'))
+        else:
+            raise Exception()
+    except KeyboardInterrupt:
+        sys.exit(0)
+    except:
+        LOGO_TEXT("IP", "Không xác định")
+        LOGO_TEXT("Khu Vực", "Không xác định")
+        LOGO_TEXT("Isp", "Không xác định")
+        LOGO_TEXT("Nhà Mạng", "Không xác định")
 
-
+    print(f"{COLOR_LINE}{'─'*70}{COLOR_RESET}")
+    split_terminal()
+    
 def create_menu_table():
     table = Table(
         title="[#ff9ecb]MENU TOOL[/]",
@@ -1106,8 +1093,7 @@ if __name__ == "__main__":
         
         while True:
             banner()
-            get_ip_info()
-            
+              
             if license_manager:
                 remaining_text = license_manager.get_remaining_display()
                 if remaining_text:
