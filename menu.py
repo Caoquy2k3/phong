@@ -948,7 +948,7 @@ def create_menu_table():
         ("3", "[#ffffff]Auto Golike [bold #38bdf8]Instagram[/] [bold #ff9ecb]selenium TERMUX[/] [bold #38bdf8] ưu [/] [bold #a78bfa]tiên[/][/] [bold #00ff9c] chạy termux"),
         ("4", "[#ffffff]Auto Golike [bold #00ffff]Instagram[/] [#ffd54f]selenium PC[/] [#ffffff][ ưu tiên chạy[/] [bold #ff9ecb]Windows[#ffffff] ][/] [/]"), 
         ("5", "[#ffffff]Tool [bold #00ffff]reg[/] [#ffd54f]pro5[/] [#ffffff][ [bold #ff9ecb]New [#ffffff] ][/]"),
-        ("6", "[#ffffff]Tool 6 - Đang phát triển[/]")
+        ("6", "[#ffffff] TOOL [bold #00ffff]ADB[/] [#ffd54f]REG[/] [bold #38bdf8]APP[/] [bold #ff9ecb][/][bold #00ff9c]INSTAGRAM[/][bold #a78bfa] VIP[/]"),
     ]
     for stt, name in modes:
         table.add_row(stt, name)
@@ -1073,7 +1073,7 @@ RAW_LINKS = {
     "3": "https://raw.githubusercontent.com/Caoquy2k3/Phong-tus/refs/heads/main/igchrome.py",
     "4": "https://raw.githubusercontent.com/Caoquy2k3/Phong-tus/refs/heads/main/igpc.py",
     "5": "https://raw.githubusercontent.com/Caoquy2k3/Phong-tus/refs/heads/main/pro5.py",
-    "6": "https://raw.githubusercontent.com/Caoquy2k3/Phong-tus/main/tool6.py",
+    "6": "https://raw.githubusercontent.com/Caoquy2k3/phong/refs/heads/main/menuregig.py",
     "7": "https://raw.githubusercontent.com/Caoquy2k3/Phong-tus/main/tool7.py",
     "8": "https://raw.githubusercontent.com/Caoquy2k3/Phong-tus/main/tool8.py",
     "9": "https://raw.githubusercontent.com/Caoquy2k3/Phong-tus/main/tool9.py",
