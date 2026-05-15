@@ -12,6 +12,7 @@ import urllib.request
 from urllib.parse import urlparse, parse_qs
 import socket
 import os, psutil
+import logging
 # --- CẤU HÌNH ---
 API_KEY         = "68b724432ecbb063ee12123a"
 DESTINATION     = "https://yourdestinationlink.com/?key="
@@ -51,6 +52,14 @@ BOLD      = "\033[1m"
 DIM       = "\033[2m"
 ITALIC    = "\033[3m"
 UNDERLINE = "\033[4m"
+
+# --- LOGGING ---
+LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO").upper()
+logging.basicConfig(
+    level=getattr(logging, LOG_LEVEL, logging.INFO),
+    format="%(asctime)s %(levelname)s %(name)s: %(message)s",
+)
+logger = logging.getLogger("golike")
 
 # --- GLOBAL VARIABLES ---
 monitor_lock = threading.Lock()
@@ -456,6 +465,107 @@ def acc_instagram_api(token, t=None):
     except Exception:
         return []
 
+def acc_tiktok_api(token, t=None):
+    try:
+        r = requests.get("https://gateway.golike.net/api/tiktok-account", headers=make_headers(token, "android", t), timeout=10)
+        r.raise_for_status()
+        return r.json().get("data", [])
+    except Exception:
+        return []
+
+def tiktok_fetch_jobs(account_id, token, t=None):
+    """Thử lấy danh sách job TikTok qua một số endpoint phổ biến khác nhau."""
+    headers = make_headers(token, "android", t)
+    candidate_urls = [
+        f"https://gateway.golike.net/api/tiktok-account/{account_id}/jobs",
+        f"https://gateway.golike.net/api/missions/list?platform=tiktok&account_id={account_id}",
+        f"https://gateway.golike.net/api/advertising/tiktok/get-job?account_id={account_id}",
+    ]
+    for url in candidate_urls:
+        try:
+            r = requests.get(url, headers=headers, timeout=12)
+            if r.status_code != 200:
+                continue
+            data = r.json()
+            # Chuẩn hoá một số format có thể gặp
+            if isinstance(data, dict):
+                if "data" in data and isinstance(data["data"], list):
+                    return data["data"]
+                if "jobs" in data and isinstance(data["jobs"], list):
+                    return data["jobs"]
+                if "items" in data and isinstance(data["items"], list):
+                    return data["items"]
+            if isinstance(data, list):
+                return data
+        except Exception:
+            continue
+    return []
+
+def tiktok_complete_job(job, account_id, token, t=None):
+    """Cố gắng xác nhận hoàn thành job TikTok qua nhiều endpoint thường gặp."""
+    headers = make_headers(token, "android", t)
+    job_id = (job or {}).get("id") or (job or {}).get("job_id") or (job or {}).get("mission_id")
+    if not job_id:
+        return False, "Thiếu job_id"
+
+    candidates = [
+        ("https://gateway.golike.net/api/advertising/tiktok/complete", {"account_id": account_id, "job_id": job_id}),
+        ("https://gateway.golike.net/api/missions/complete", {"platform": "tiktok", "id": job_id, "account_id": account_id}),
+        (f"https://gateway.golike.net/api/missions/{job_id}/complete", {"platform": "tiktok", "account_id": account_id}),
+    ]
+
+    for url, payload in candidates:
+        try:
+            r = requests.post(url, headers=headers, json=payload, timeout=12)
+            if r.status_code == 200:
+                try:
+                    j = r.json()
+                except Exception:
+                    j = {"raw": r.text}
+                # Một số API trả về {status:true} hoặc {success:true}
+                if isinstance(j, dict) and (j.get("status") is True or j.get("success") is True or j.get("ok") is True):
+                    return True, "Đã xác nhận hoàn thành"
+                # Nếu không có cờ, coi 200 là thành công
+                return True, "Đã gửi xác nhận (HTTP 200)"
+        except Exception:
+            continue
+    return False, "Không thể xác nhận job qua các endpoint đã thử"
+
+def do_tiktok_jobs_for_account(account, token, t=None, max_jobs=None, auto_confirm=False, delay_seconds=6):
+    acc_id = account.get("id")
+    username = account.get("tiktok_username") or account.get("username") or account.get("name") or str(acc_id)
+    print(f"{CYAN}➡ Bắt đầu lấy job TikTok cho account {username} (ID: {acc_id})...{RESET}")
+    fetched = tiktok_fetch_jobs(acc_id, token, t)
+    if not fetched:
+        print(f"{YELLOW}⚠️ Không có job TikTok khả dụng cho account này.{RESET}")
+        return
+
+    completed = 0
+    for job in fetched:
+        if max_jobs is not None and completed >= max_jobs:
+            break
+        link = job.get("link") or job.get("url") or job.get("mission_url")
+        jtype = job.get("type") or job.get("action") or "unknown"
+        jid = job.get("id") or job.get("job_id")
+        print(f"{WHITE}• Job: {CYAN}{jtype}{RESET} | ID: {GREEN}{jid}{RESET}")
+        if link:
+            print(f"{YELLOW}   Link: {CYAN}{link}{RESET}")
+
+        if not auto_confirm:
+            ans = input(f"{YELLOW}👉 Mở link và thực hiện hành động, sau đó nhập 'y' để xác nhận: {RESET}").strip().lower()
+            if ans != "y":
+                print(f"{RED}✖ Bỏ qua job này.{RESET}")
+                continue
+        else:
+            time.sleep(max(0, int(delay_seconds)))
+
+        ok, msg = tiktok_complete_job(job, acc_id, token, t)
+        if ok:
+            print(f"{GREEN}✅ {msg}{RESET}\n")
+            completed += 1
+        else:
+            print(f"{RED}✖ {msg}{RESET}\n")
+
 def do_job_for_account(account, token, t=None):
     # Đây là hàm placeholder cho logic chạy job thực tế
     print(f"{CYAN}➡ Bắt đầu lấy job cho account {account.get('instagram_username')} (ID: {account.get('id')})...{RESET}")
@@ -704,7 +814,8 @@ def UI():
         banner(user)
         print(f"""
 {YELLOW}====== MENU ======{RESET}
-{GREEN}1{RESET} - Xem danh sách Instagram đã liên kết và chạy job
+{GREEN}1{RESET} - Instagram: Xem danh sách đã liên kết và chạy job
+{GREEN}2{RESET} - TikTok: Xem danh sách đã liên kết và chạy job
 {GREEN}0{RESET} - Thoát
 """)
         ch = input(f"{YELLOW}👉 Nhập lựa chọn: {RESET}").strip()
@@ -739,6 +850,40 @@ def UI():
             else:
                 print(f"{RED}⚠️ Chưa liên kết Instagram nào.{RESET}")
             
+            input(f"\n{YELLOW}👉 Enter để quay lại menu...{RESET}")
+        elif ch == "2":
+            accs = acc_tiktok_api(token, t_val)
+            if accs:
+                print(f"{CYAN}📌 Danh sách TikTok account đã liên kết:{RESET}")
+                for i, a in enumerate(accs, 1):
+                    uid = a.get("id")
+                    uname = a.get("tiktok_username") or a.get("username") or a.get("name")
+                    print(f"{GREEN}{i}{RESET} | ID: {uid} | User: {CYAN}{uname}{RESET}")
+                choice = input(f"{YELLOW}👉 Nhập số account muốn chọn (vd: 1,3,5 hoặc all): {RESET}").strip()
+                selected = []
+                if choice.lower() == "all":
+                    selected = accs
+                else:
+                    try:
+                        idxs = [int(x) for x in choice.split(",")]
+                        selected = [accs[i-1] for i in idxs if 0 < i <= len(accs)]
+                    except Exception:
+                        print(f"{RED}⚠️ Lựa chọn không hợp lệ!{RESET}")
+                if selected:
+                    auto = input(f"{YELLOW}👉 Tự động xác nhận hoàn thành? (y/N): {RESET}").strip().lower() == "y"
+                    delay = 6
+                    if auto:
+                        try:
+                            delay = int(input(f"{YELLOW}👉 Độ trễ mỗi job (giây, mặc định 6): {RESET}") or 6)
+                        except Exception:
+                            delay = 6
+                    print(f"{CYAN}➡ Bắt đầu job TikTok cho {len(selected)} account...{RESET}")
+                    for acc in selected:
+                        do_tiktok_jobs_for_account(acc, token, t_val, auto_confirm=auto, delay_seconds=delay)
+                else:
+                    print(f"{RED}⚠️ Không có account nào được chọn!{RESET}")
+            else:
+                print(f"{RED}⚠️ Chưa liên kết TikTok nào.{RESET}")
             input(f"\n{YELLOW}👉 Enter để quay lại menu...{RESET}")
             
         elif ch == "0":
