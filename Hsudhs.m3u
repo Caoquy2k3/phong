@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Đường dẫn file m3u bạn đang dùng cho IPTV (hãy đổi lại tên file của bạn nếu khác)
+M3U_FILE="/đường/dẫn/đến/file/cua_ban.m3u"
+
+URL="https://vi.stripchat.global/api/front/models?removeShows=false&recInFeatured=false&limit=60&offset=0&primaryTag=girls&filterGroupTags=%5B%5B%22tagLanguageVietnamese%22%5D%5D&sortBy=stripRanking&parentTag=tagLanguageVietnamese&nic=true&byw=false&rcmGrp=A&rbCnGr=true&iem=true&decMb=false&dmv=false&ctryTop=true&guestHash=9466f7ab996bc31051a51d4c7b0229e8f3812105246126218e5f7551edeaa9d0&mlfv=false&rectf=false&eab=false&sac=true"
+
+COOKIE="stripchat_global_guestId=5d4a73024d6257d0a532a77787b3d457f5b875c087208d216e2a4b30917c; cf_clearance=N8Uu7.xXPl1Od.Kcx3BCRooUH40tTM0cvszZItlSi7Q-1789064904-1.2.1.1-wgh99iDfKZFPdkbWCvFIhrz6FU1Mj2EiM_dIw0gQA9hOO9CyaiMzbm1Rr.HsBR2vti8OFvH8YTtZeOM1E0SqES2K6I2zexW2RDp13X6L9DNFam5gNs4_SFkkhUfSqc39f5eAI4lNiLUOZvhuDkwTXf47lVD2rbcQgCC8ypSbIytnyJVIO99qrph4B_68nnWGiz1JPKDTlkTA0wp5NWppnw6Q37j884KDahezcshYmu7bWMh0zvgBiSCod8hhKktWDFONNERfFVR4yNBfAtnJ0MQ_sulgIekQ5xrDRQboR0wRp0UD6GNBUDPYkAQTbVC_GsDZy.288yvWa9962I2Tlo39SKyu_64qEvk6yDxG2CWio7TEQvqVhecKN1eok4mwEFWCx1HJaXg4XySzYaH86aiVuyWCVru5snqyHK.bFxA; __cf_bm=HIlvJTrH9fewecb0aS7TedVJhLd00R._WIvPcR84Xbk-1793348170.3227289-1.0.1.1-hqZEvMKfabo9iovlQQaQTSvusAHePObLdIu5nx9F6TIeZFERKYIJ7SRaW1L7wmAoCdHXqQAuEMTZkpdWAJ.urTQECDa6KL6PRG_FQHsvSSsgkX8YxBv30f3K_oft5AohgLY9uY6fPnteBaYQFzXNPQ"
+
+# Gọi cURL và ghi đè trực tiếp vào file M3U của bạn kèm header tối ưu cho IPTV
+curl -s "$URL" \
+  -H "cookie: $COOKIE" \
+  -H "user-agent: Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Mobile Safari/537.36" \
+  -H "referer: https://vi.stripchat.global/girls/vietnamese" \
+| jq -r '"#EXTM3U\n#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36\n#EXTVLCOPT:http-referrer=https://vi.stripchat.global/\n" + (.models[]? | "#EXTINF:-1 tvg-name=\"\(.username)\" group-title=\"Stripchat VN\", [\(.status | ascii_upcase)] \(.displayName // .username)\nhttps://b-hls-01.doppiocdn.com/hls/\(.username)/master_\(.username).m3u8\n")' > "$M3U_FILE"
