@@ -1,1 +1,7 @@
-https://vi.stripchat.global/api/front/models?removeShows=false&recInFeatured=false&limit=60&offset=0&primaryTag=girls&filterGroupTags=%5B%5B%22tagLanguageVietnamese%22%5D%5D&sortBy=stripRanking&parentTag=tagLanguageVietnamese&nic=true&byw=false&rcmGrp=A&rbCnGr=true&iem=true&decMb=false&dmv=false&ctryTop=true&guestHash=9466f7ab996bc31051a51d4c7b0229e8f3812105246126218e5f7551edeaa9d0&mlfv=false&rectf=false&eab=false&sac=true
+#EXTM3U
+#EXTINF:-1 tvg-name="emmy_cute9" group-title="Stripchat VN", [ONLINE] emmy_cute9
+https://b-hls-01.doppiocdn.com/hls/emmy_cute9/master_emmy_cute9.m3u8
+#EXTINF:-1 tvg-name="vyvy99" group-title="Stripchat VN", [ONLINE] vyvy99
+https://b-hls-01.doppiocdn.com/hls/vyvy99/master_vyvy99.m3u8
+#EXTINF:-1 tvg-name="thao_cute" group-title="Stripchat VN", [ONLINE] thao_cute
+https://b-hls-01.doppiocdn.com/hls/thao_cute/master_thao_cute.m3u8
