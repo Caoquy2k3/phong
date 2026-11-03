@@ -1,14 +1,11 @@
-#EXTM3U url-tvg="https://lichphatsong.io.vn/epg.xml"
+#EXTM3U
 
 # ===== KÊNH NỘI DUNG VTVGO =====
 
 # KÊNH 1: VTV PHIM TÀI LIỆU
-# EPG: https://api.vtvdigital.org/display/v21.0/epg?channelIDs=vtvgo-fast-tai-lieu&from=2026-11-04&to=2026-11-04
 #EXTINF:-1 tvg-id="vtvgo-fast-tai-lieu" tvg-name="VTV Phim Tài Liệu" tvg-logo="https://thumb.vtvdigital.org/transform?url=https://vtvgo-next-assets.vtvdigital.vn/prod/images/channel/20261013/2026101304/b630a0a6-3ef5-49ce-9cbd-de17a42f019a-VTVgo-Phim-Tai-Lieu-THUMBNAIL-KENH-VTVgo-500x281.png&width=640" group-title="KÊNH NỘI DUNG VTVGO",VTV Phim Tài Liệu
 https://fast-channel-stg.vtvdigital.vn/playout/releases/go-20261013/channels/auto-phim-tai-lieu/1080p/index.m3u8
 
-
 # KÊNH 2: VTV CA NHẠC
-# EPG: https://api.vtvdigital.org/display/v21.0/epg?channelIDs=vtvgo-fast-ca-nhac&from=2026-11-04&to=2026-11-04
-#EXTINF:-1 tvg-id="vtvgo-fast-ca-nhac" tvg-name="VTVgo Ca Nhạc" tvg-logo="https://thumb.vtvdigital.org/transform?url=https://vtvgo-next-assets.vtvdigital.vn/prod/images/channel/20261022/2026102204/ed4d3183-73e6-4bc3-89fa-ef4a25ae3e8b-VTVgo-Ca-Nhac150x90.png" group-title="KÊNH NỘI DUNG VTVGO",VTVgo Ca Nhạc
-THAY_BANG_URL_HLS_CUA_KENH_CA_NHAC
+#EXTINF:-1 tvg-id="vtvgo-fast-ca-nhac" tvg-name="VTV Ca Nhạc" tvg-logo="https://thumb.vtvdigital.org/transform?url=https://vtvgo-next-assets.vtvdigital.vn/prod/images/channel/20261022/2026102204/ed4d3183-73e6-4bc3-89fa-ef4a25ae3e8b-VTVgo-Ca-Nhac150x90.png" group-title="KÊNH NỘI DUNG VTVGO",VTV Ca Nhạc
+https://fast-channel-stg.vtvdigital.vn/playout/releases/go-20261013/channels/auto-phim-tai-lieu/1080p/index.m3u8
