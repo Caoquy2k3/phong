@@ -1,4 +1,11 @@
-#EXTM3U url-tvg="https://api.vtvdigital.org/display/v21.0/epg?channelIDs=vtvgo-fast-tai-lieu&from=2026-11-03&to=2026-11-03"
+#EXTM3U
 
-#EXTINF:-1 tvg-id="vtvgo-fast-tai-lieu" tvg-name="VTV Phim Tài Liệu" tvg-logo="https://thumb.vtvdigital.org/transform?url=https://vtvgo-next-assets.vtvdigital.vn/prod/images/channel/20261013/2026101304/b630a0a6-3ef5-49ce-9cbd-de17a42f019a-VTVgo-Phim-Tai-Lieu-THUMBNAIL-KENH-VTVgo-500x281.png&width=640" group-title="PHIM TÀI LIỆU",VTV Phim Tài Liệu
-https://fast-channel-stg.vtvdigital.vn/playout/releases/go-20261013/channels/auto-phim-tai-lieu/master.m3u8
+# ===== KÊNH NỘI DUNG VTVGO =====
+
+# KÊNH 1: VTV Phim Tài Liệu
+#EXTINF:-1 tvg-id="vtvgo-fast-tai-lieu" tvg-name="VTV Phim Tài Liệu" tvg-logo="https://thumb.vtvdigital.org/transform?url=https://vtvgo-next-assets.vtvdigital.vn/prod/images/channel/20261013/2026101304/b630a0a6-3ef5-49ce-9cbd-de17a42f019a-VTVgo-Phim-Tai-Lieu-THUMBNAIL-KENH-VTVgo-500x281.png&width=640" group-title="KÊNH NỘI DUNG VTVGO",VTV Phim Tài Liệu
+https://fast-channel-stg.vtvdigital.vn/playout/releases/go-20261013/channels/auto-phim-tai-lieu/1080p/index.m3u8
+
+# KÊNH 2: VTV Ca Nhạc
+#EXTINF:-1 tvg-id="vtvgo-fast-ca-nhac" tvg-name="VTV Ca Nhạc" tvg-logo="" group-title="KÊNH NỘI DUNG VTVGO",VTV Ca Nhạc
+https://fast-channel-stg.vtvdigital.vn/playout/releases/go-20261013/channels/auto-phim-tai-lieu/1080p/index.m3u8
