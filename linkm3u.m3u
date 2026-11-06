@@ -1,5 +1,5 @@
 #EXTM3U url-tvg="https://lichphatsong.io.vn/epg.xml"
-# ===== 6 KÊNH NỘI DUNG VTVGO =====
+# ===== 7 KÊNH NỘI DUNG VTVGO =====
 #EXTINF:-1 tvg-id="vtvgo-fast-tai-lieu" tvg-name="VTV Phim Tài Liệu" tvg-logo="https://thumb.vtvdigital.org/transform?url=https://vtvgo-next-assets.vtvdigital.vn/prod/images/channel/20261013/2026101304/b630a0a6-3ef5-49ce-9cbd-de17a42f019a-VTVgo-Phim-Tai-Lieu-THUMBNAIL-KENH-VTVgo-500x281.png&width=640" group-title="KÊNH NỘI DUNG VTVGO",VTV Phim Tài Liệu
 https://fast-channel-stg.vtvdigital.vn/playout/releases/go-20261013/channels/auto-phim-tai-lieu/1080p/index.m3u8
 #EXTINF:-1 tvg-id="vtvgo-fast-ca-nhac" tvg-name="VTV Ca Nhạc" tvg-logo="https://thumb.vtvdigital.org/transform?url=https://vtvgo-next-assets.vtvdigital.vn/prod/images/channel/20261013/2026101304/313e1dfc-ef52-4628-a060-f9c9560eb2ad-VTVgo-Ca-Nhac-THUMBNAIL-KENH-VTVgo-500x281.png&width=320" group-title="KÊNH NỘI DUNG VTVGO",VTV Ca Nhạc
@@ -12,11 +12,14 @@ https://fast-channel-stg.vtvdigital.vn/playout/channels/auto-suc-khoe-nguoi-gia/
 https://fast-channel-stg.vtvdigital.vn/playout/channels/auto-thieu-nhi/master.m3u8
 #EXTINF:-1 tvg-id="vtvgo-fast-du-lich" tvg-name="VTV Du Lịch" tvg-logo="https://thumb.vtvdigital.org/transform?url=https://vtvgo-next-assets.vtvdigital.vn/prod/images/channel/20261013/2026101304/9e6eb8e2-7b39-4a3d-8f68-30c5872d9285-VTVgo-Du-Lich-THUMBNAIL-KENH-VTVgo-500x281.png&width=320" group-title="KÊNH NỘI DUNG VTVGO",VTV Du Lịch
 https://fast-channel-stg.vtvdigital.vn/playout/channels/auto-du-lich-kham-pha/master.m3u8
+#EXTINF:-1 tvg-id="vtvgo-fast-phim-truyen" tvg-name="VTV Phim Truyện" tvg-logo="https://thumb.vtvdigital.org/transform?url=https://vtvgo-next-assets.vtvdigital.vn/prod/images/channel/20261013/2026101304/8353f62f-c4de-40c6-9e8e-b482d8e9d0af-VTVgo-Phim-VFC-THUMBNAIL-KENH-VTVgo-500x281.png&width=640" group-title="KÊNH NỘI DUNG VTVGO",VTV Phim Truyện
+https://fast-channel-stg.vtvdigital.vn/playout/releases/go-20261013/channels/auto-phim-truyen/master.m3u8
 # ===== VTVGO LIVE =====
 #EXTINF:-1 tvg-id="1111" tvg-name="Livestream Vietnam Wild Live | 04/11/2026 | Ngôi nhà của các loài bay" tvg-logo="https://thumb.vtvdigital.org/transform?url=https://vtvgo-next-assets.vtvdigital.vn/prod/images/channel/20261104/2026110407/0a50b3ba-b9c6-4f31-90f9-6270df1057ff-4b289013-aa62-4acb-bcdb-9568786c1fac-ANHTHUMB411-2560x1440.jpg" group-title="VTVGO LIVE",Livestream Vietnam Wild Live | 04/11/2026 | Ngôi nhà của các loài bay
 https://events.vtvdigital.vn/livestream/wildlife-1080p50fps2.m3u8
 # ===== API EPG =====
 # https://api.vtvdigital.org/display/v21.0/epg?channelIDs=1111&from=2026-11-04&to=2026-11-04
+# https://api.vtvdigital.org/display/v21.0/epg?channelIDs=vtvgo-fast-phim-truyen&from=2026-11-06&to=2026-11-06
 # ===== API CHANNEL DETAILS =====
 # https://api.vtvdigital.org/display/v21.0/channels/details?channelIDs=1111
 # ===== API LIVE LAST MESSAGES =====
