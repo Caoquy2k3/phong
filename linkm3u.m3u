@@ -50,15 +50,21 @@ https://fast-channel-stg.vtvdigital.vn/playout/releases/go-20261013/channels/aut
 # VTV Phim Truyện
 # https://api.vtvdigital.org/display/v21.0/epg?channelIDs=vtvgo-fast-phim-truyen&from=2026-11-09&to=2026-11-09
 
-# VTV Vui Vẻ - EPG CÓ DỮ LIỆU
+# VTV Vui Vẻ
 # https://api.vtvdigital.org/display/v21.0/epg?channelIDs=vtvgo-fast-vui-ve&from=2026-11-09&to=2026-11-09
 
 
 # ===== API CHANNEL DETAILS =====
+
+# VTV Vui Vẻ
 # https://api.vtvdigital.org/display/v21.0/channels/details?channelIDs=vtvgo-fast-vui-ve
 
+
 # ===== API LIVE LAST MESSAGES =====
+
 # https://api.vtvdigital.org/interaction/v21.0/live-last-messages?room_id=1111&block_offset_s=1635
 
+
 # ===== API IN-APP MESSAGES =====
+
 # https://api.vtvdigital.org/inapp-noti/v21.0/in-app-messages?segmentID=default&platform=webAndroid
