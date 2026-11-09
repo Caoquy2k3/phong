@@ -27,40 +27,27 @@ https://fast-channel-stg.vtvdigital.vn/playout/releases/go-20261013/channels/aut
 https://fast-channel-stg.vtvdigital.vn/playout/releases/go-20261013/channels/auto-vui-ve/master.m3u8
 
 
-# ===== EPG API =====
+# ===== VTV VUI VẺ - EPG API RIÊNG =====
 
-# ID EPG phải khớp với tvg-id trong M3U.
+# CHANNEL ID: vtvgo-fast-vui-ve
+# TVG ID: vtvgo-fast-vui-ve
 
-# VTV Phim Tài Liệu
-# https://api.vtvdigital.org/display/v21.0/epg?channelIDs=vtvgo-fast-tai-lieu&from=YYYY-MM-DD&to=YYYY-MM-DD
-
-# VTV Ca Nhạc
-# https://api.vtvdigital.org/display/v21.0/epg?channelIDs=vtvgo-fast-ca-nhac&from=YYYY-MM-DD&to=YYYY-MM-DD
-
-# VTV Gameshow
-# https://api.vtvdigital.org/display/v21.0/epg?channelIDs=vtvgo-fast-game-show&from=YYYY-MM-DD&to=YYYY-MM-DD
-
-# VTV Sức Khỏe
-# https://api.vtvdigital.org/display/v21.0/epg?channelIDs=vtvgo-fast-suc-khoe-nguoi-gia&from=YYYY-MM-DD&to=YYYY-MM-DD
-
-# VTV Thiếu Nhi
-# https://api.vtvdigital.org/display/v21.0/epg?channelIDs=vtvgo-fast-thieu-nhi&from=YYYY-MM-DD&to=YYYY-MM-DD
-
-# VTV Du Lịch
-# https://api.vtvdigital.org/display/v21.0/epg?channelIDs=vtvgo-fast-du-lich&from=YYYY-MM-DD&to=YYYY-MM-DD
-
-# VTV Phim Truyện
-# https://api.vtvdigital.org/display/v21.0/epg?channelIDs=vtvgo-fast-phim-truyen&from=YYYY-MM-DD&to=YYYY-MM-DD
-
-# ===== VTV VUI VẺ - EPG LỊCH SỬ RIÊNG =====
-
-# tvg-id="vtvgo-fast-vui-ve"
-# channelIDs="vtvgo-fast-vui-ve"
-
+# EPG:
 # https://api.vtvdigital.org/display/v21.0/epg?channelIDs=vtvgo-fast-vui-ve&from=YYYY-MM-DD&to=YYYY-MM-DD
 
-# CHANNEL DETAILS
+# CHANNEL DETAILS:
 # https://api.vtvdigital.org/display/v21.0/channels/details?channelIDs=vtvgo-fast-vui-ve
+
+# ===== EPG MAPPING =====
+# VTV Vui Vẻ phải được mapping bằng channelId = tvg-id.
+# Đọc programs từ dữ liệu API riêng.
+# Không lọc bỏ chương trình đã kết thúc.
+# startTime <= now < endTime: Đang phát.
+# endTime <= now: Lịch sử phát sóng.
+# startTime > now: Sắp phát.
+# Chuyển UTC sang Asia/Ho_Chi_Minh.
+# Truy vấn ngày hiện tại và các ngày lịch sử cần xem.
+# Không dùng EPG XML tổng để ghi đè EPG riêng VTV Vui Vẻ.
 
 # ===== LIVE LAST MESSAGES =====
 # https://api.vtvdigital.org/interaction/v21.0/live-last-messages?room_id=1111&block_offset_s=1635
