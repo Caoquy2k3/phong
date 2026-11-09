@@ -1,4 +1,4 @@
-#EXTM3U url-tvg="https://lichphatsong.io.vn/epg.xml"
+#EXTM3U url-tvg="https://api.vtvdigital.org/display/v21.0/epg?channelIDs=vtvgo-fast-tai-lieu,vtvgo-fast-ca-nhac,vtvgo-fast-game-show,vtvgo-fast-suc-khoe-nguoi-gia,vtvgo-fast-thieu-nhi,vtvgo-fast-du-lich,vtvgo-fast-phim-truyen,vtvgo-fast-vui-ve&from=2026-11-09&to=2026-11-09"
 
 # ===== 8 KÊNH NỘI DUNG VTVGO =====
 
@@ -25,32 +25,3 @@ https://fast-channel-stg.vtvdigital.vn/playout/releases/go-20261013/channels/aut
 
 #EXTINF:-1 tvg-id="vtvgo-fast-vui-ve" tvg-name="VTV Vui Vẻ" tvg-logo="https://thumb.vtvdigital.org/transform?url=https://vtvgo-next-assets.vtvdigital.vn/prod/images/channel/20261106/2026110609/43f9e686-937a-4367-a8de-aece483e03ad-THUMBNAIL-KENH-VTVgo-Fast-Channel-500x281.png" group-title="KÊNH NỘI DUNG VTVGO",VTV Vui Vẻ
 https://fast-channel-stg.vtvdigital.vn/playout/releases/go-20261013/channels/auto-vui-ve/master.m3u8
-
-
-# ===== VTV VUI VẺ - EPG API RIÊNG =====
-
-# CHANNEL ID: vtvgo-fast-vui-ve
-# TVG ID: vtvgo-fast-vui-ve
-
-# EPG:
-# https://api.vtvdigital.org/display/v21.0/epg?channelIDs=vtvgo-fast-vui-ve&from=YYYY-MM-DD&to=YYYY-MM-DD
-
-# CHANNEL DETAILS:
-# https://api.vtvdigital.org/display/v21.0/channels/details?channelIDs=vtvgo-fast-vui-ve
-
-# ===== EPG MAPPING =====
-# VTV Vui Vẻ phải được mapping bằng channelId = tvg-id.
-# Đọc programs từ dữ liệu API riêng.
-# Không lọc bỏ chương trình đã kết thúc.
-# startTime <= now < endTime: Đang phát.
-# endTime <= now: Lịch sử phát sóng.
-# startTime > now: Sắp phát.
-# Chuyển UTC sang Asia/Ho_Chi_Minh.
-# Truy vấn ngày hiện tại và các ngày lịch sử cần xem.
-# Không dùng EPG XML tổng để ghi đè EPG riêng VTV Vui Vẻ.
-
-# ===== LIVE LAST MESSAGES =====
-# https://api.vtvdigital.org/interaction/v21.0/live-last-messages?room_id=1111&block_offset_s=1635
-
-# ===== IN-APP MESSAGES =====
-# https://api.vtvdigital.org/inapp-noti/v21.0/in-app-messages?segmentID=default&platform=webAndroid
